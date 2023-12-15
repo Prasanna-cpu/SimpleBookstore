@@ -8,7 +8,7 @@ const BookSchema=mongoose.Schema(
         },
         author:{
             type:String,
-            required
+            required:true
         },
         publishedYear:{
             type:Number,
@@ -22,4 +22,4 @@ const BookSchema=mongoose.Schema(
 )
 
 
-export const Book=mongoose.Model('Book',BookSchema)
+export const Book=mongoose.model('Book',BookSchema)
