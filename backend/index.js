@@ -4,10 +4,10 @@ import { fileURLToPath } from "url";
 import { dirname } from "path";
 import {connectDB} from "./connectDB.js"
 import path from "path";
+import {bookRoutes} from './routes/bookRoutes.js'
 import {Book} from './models/bookModel.js'
 import https from 'https';
-
-
+import mongoose from 'mongoose';
 const agent = new https.Agent({
   minVersion: "TLSv1.2", // Specify the minimum required TLS version
 });
@@ -30,50 +30,7 @@ app.get("/",(req,res)=>{
     return res.status(234).send("Welcome to this project")
 })
 
-//Route to save a new book
-app.post('/books',async(req,res)=>{
-    try{
-        if(!req.body.title || !req.body.author ||!req.body.publishedYear){
-            return res.status(400).send({
-                message:'User needs to define all required fields (title,body,publishedYear)',
-
-            })
-        }
-
-        const newBook={
-            title:req.body.title,
-            author:req.body.author,
-            publishedYear:req.body.publishedYear
-        };
-        const book=await Book.create(newBook);
-        return res.status(201).send(book)
-
-    }
-
-    catch(error){
-        console.log(`An error occured:${error}`)
-        res.status(500).send({message:error.message})
-    }
-})
-
-//Route to get all books in data
-
-app.get('/books',async(req,res)=>{
-    try{
-        const allBooks=await Book.find({});
-        return res.status(200).json({
-            count:allBooks.length,
-            data:allBooks
-        })
-    }
-    catch(error){
-        console.log(`An error occured:${error}`)
-        res.status(500).send({message:error.message})
-    
-    }
-})
-
-//Get one book's ID
+app.use('/books',bookRoutes);
 
 connectDB(uri)
 
