@@ -7,6 +7,7 @@ import path from "path";
 import {bookRoutes} from './routes/bookRoutes.js'
 import {Book} from './models/bookModel.js'
 import https from 'https';
+import cors from 'cors';
 import mongoose from 'mongoose';
 const agent = new https.Agent({
   minVersion: "TLSv1.2", // Specify the minimum required TLS version
@@ -23,7 +24,7 @@ const uri=process.env.MONGODB_URI;
 
 
 const app=express()
-
+app.use(cors());
 
 app.use(express.json())
 app.get("/",(req,res)=>{
